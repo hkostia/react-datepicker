@@ -116,9 +116,10 @@ export default class Day extends React.Component {
     return isDayInRange(day, startDate, endDate);
   };
 
-  getSelectingDate = () => this.props.disabledKeyboardNavigation
-    ? this.props.selectingDate ?? this.props.selected
-    : this.props.selectingDate ?? this.props.preSelection;
+  getSelectingDate = () =>
+    this.props.disabledKeyboardNavigation
+      ? this.props.selectingDate ?? this.props.selected
+      : this.props.selectingDate ?? this.props.preSelection;
 
   isInSelectingRange = () => {
     const {
@@ -199,6 +200,17 @@ export default class Day extends React.Component {
     }
   };
 
+  isSelectedRangeStartOrEnd = () => {
+    const { day, endDate, startDate, selectsStart, selectsEnd } = this.props;
+    if (selectsEnd) {
+      return isSameDay(day, startDate);
+    }
+    if (selectsStart) {
+      return isSameDay(day, endDate);
+    }
+    return false;
+  };
+
   isRangeStart = () => {
     const { day, startDate, endDate } = this.props;
     if (!startDate || !endDate) {
@@ -236,7 +248,8 @@ export default class Day extends React.Component {
 
   isCurrentDay = () => this.isSameDay(newDate());
 
-  isSelected = () => this.isSameDay(this.props.selected);
+  isSelected = () =>
+    this.isSameDay(this.props.selected) || this.isSelectedRangeStartOrEnd();
 
   getClassNames = (date) => {
     const dayClassName = this.props.dayClassName
